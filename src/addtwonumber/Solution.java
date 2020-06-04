@@ -72,6 +72,10 @@ public class Solution {
         ListNode ret = node;
         int carry = 0;
         while (!(l1 == null && l2 == null)) {
+            if (node != null) {
+                node.next = new ListNode(carry);
+                node = node.next;
+            }
             if (l1 != null) {
                 carry += l1.val;
                 l1 = l1.next;
@@ -83,10 +87,9 @@ public class Solution {
             if (carry >= 10) node.val = carry % 10;
             else node.val = carry;
             carry /= 10;
-            node.next = new ListNode(carry);
-            node = node.next;
+
         }
-        if (node.val == 0) node = null;
-        return ret;
+        if (carry > 0 ) node.next = new ListNode(carry);
+        return ret.next;
     }
 }
