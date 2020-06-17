@@ -2,10 +2,7 @@ package isValid;
 
 import addtwonumber.ListNode;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。
@@ -21,12 +18,15 @@ import java.util.Set;
  */
 
 public class IsValid {
+
+
     public static void main(String[] args) {
-        System.out.println(isValid("(([]){})"));
+        System.out.println(solution2("(([]){(})"));
     }
 
+    // 自己的解法，无法通过全部的测试用例
     public static boolean isValid(String s) {
-        if(s.length()==1) return false;
+        if (s.length() == 1) return false;
         Set<Character> left = new HashSet<>();
         left.add('(');
         left.add('[');
@@ -53,13 +53,33 @@ public class IsValid {
             } else {
                 if (count == 0 || count > len - i || !leftPart.reverse().toString().equals(s.substring(i, i + count)))
                     return false;
-                i += count-1;
+                i += count - 1;
                 count = 0;
                 leftPart = new StringBuilder();
 
             }
         }
-        return count==0;
+        return count == 0;
     }
 
+    // 官方解法，用栈
+    public static boolean solution2(String s) {
+        Map<Character, Character> maps = new HashMap<>();
+        maps.put(')', '(');
+        maps.put(']', '[');
+        maps.put('}', '{');
+
+        Stack<Character> stack = new Stack<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (maps.containsKey(c)) {
+                char topElement = stack.isEmpty() ? '#' : stack.pop();
+                if (maps.get(c) != topElement) return false;
+            } else {
+                stack.push(c);
+            }
+        }
+        return stack.isEmpty();
+    }
 }
