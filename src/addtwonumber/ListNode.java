@@ -1,6 +1,5 @@
 package addtwonumber;
 
-import java.util.List;
 
 public class ListNode {
     int val;
